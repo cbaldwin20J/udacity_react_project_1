@@ -5,6 +5,7 @@ import The_Li from './orderedList'
 class WantToRead extends React.Component {
 
 render() {
+  console.log("want to read", this.props.all_with_a_status)
     return (
 
 <div className="bookshelf">
@@ -12,7 +13,7 @@ render() {
   <div className="bookshelf-books">
     <ol className="books-grid">
 
-      {this.props.all_with_a_status && this.props.all_with_a_status.filter( book_object => book_object.current_status == "want to read").map((book_object) => (
+      {this.props.all_with_a_status && this.props.all_with_a_status.filter( book_object => book_object.shelf == "wantToRead").map((book_object) => (
     
       <The_Li book={book_object} change_status={this.props.change_status} />
     

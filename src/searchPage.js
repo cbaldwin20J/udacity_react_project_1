@@ -5,7 +5,8 @@ import The_Li from './orderedList'
 class SearchPage extends React.Component {
 
   render() {
-    
+    console.log("search results", this.props.search_results)
+
     return (  
 <div className="search-books">
   <div className="search-books-bar">
@@ -29,9 +30,9 @@ class SearchPage extends React.Component {
 
   <div className="search-books-results">
     <ol className="books-grid">
-  {this.props.search_results && this.props.search_results.filter( book_object =>  !this.props.all_with_a_status.includes(book_object)).map((match) => (
+  {this.props.search_results && this.props.search_results.map((match) => (
     
-      <The_Li book={match} change_status={this.props.change_status} />
+      <The_Li book={match} change_status={this.props.change_status} key={match.id}/>
     
 
     ))}

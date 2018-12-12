@@ -16,16 +16,31 @@ class BooksApp extends React.Component {
   state = {
     search_input : "",
     search_results : "",
-    all_with_a_status : []
+    all_with_a_status : [],
+    first_load: true
   }
 
   
+
+  componentDidMount() {
+    if(this.state.first_load){
+      BooksAPI.getAll()
+        .then((books) => {
+          const all_with_a_status_array = books.filter(book => book.shelf == "currentlyReading" || book.shelf == "wantToRead" || book.shelf == "read")
+            this.setState((currentState) => ({
+              first_load:false,
+              all_with_a_status: all_with_a_status_array
+        }))
+        })
+    }
+
+  }
 
   updateSearch = (search_input) => {
     BooksAPI.search(search_input)
       .then((results) => {
 
-        const final_array = [];
+        
 
         
 
@@ -43,37 +58,40 @@ updateInput = (e) => {
   }
 
 
-  change_status = (the_book_object, e) => {
-    const new_book_object = the_book_object
+updateDatabase_and_state = (book, shelf) => {
+  BooksAPI.update(book, shelf)
+    .then(() => {
+      const array_without_object = this.state.all_with_a_status.filter( book_object => book_object != book)
+      book.shelf = shelf
+      let final_updated_array = ""
+      if(shelf == "none"){
 
-    const array_without_object = this.state.all_with_a_status.filter( book_object => book_object != the_book_object)
-    const search_array_without_object = this.state.search_results.filter( book_object => book_object != the_book_object)
+        final_updated_array = array_without_object
 
-    if(e.target.value == "currentlyReading"){
-      the_book_object.current_status = "currently reading"
-      this.setState((currentState) => ({
-          search_results: search_array_without_object,
-          all_with_a_status: array_without_object.concat(the_book_object)
+      }else{
+
+        final_updated_array = array_without_object.concat(book)
+
+      }
+      if(final_updated_array){
+        console.log("got past 3", final_updated_array)
+        this.setState((currentState) => ({
+          all_with_a_status: final_updated_array
         }))
 
-    }else if(e.target.value == "wantToRead"){
-      the_book_object.current_status = "want to read"
-      this.setState((currentState) => ({
-          search_results: search_array_without_object,
-          all_with_a_status: array_without_object.concat(the_book_object)
-        }))
+      }
+      
 
-    }else if(e.target.value == "read"){
-      the_book_object.current_status = "read"
-      this.setState((currentState) => ({
-          search_results: search_array_without_object,
-          all_with_a_status: array_without_object.concat(the_book_object)
-        }))
+    })
+}
 
-    }else if(e.target.value == "none"){
-      this.setState((currentState) => ({
-          all_with_a_status: array_without_object
-        }))
+
+change_status = (the_book_object, e) => {
+
+  console.log("got past 1")
+    if(e.target.value == "currentlyReading" || e.target.value == "wantToRead" || e.target.value == "read" || e.target.value == "none"){
+      console.log("got past 2")
+      this.updateDatabase_and_state(the_book_object, e.target.value)
 
     }
   }
