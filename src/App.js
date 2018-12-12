@@ -37,9 +37,10 @@ class BooksApp extends React.Component {
   }
 
   updateSearch = (search_input) => {
+    
     BooksAPI.search(search_input)
       .then((results) => {
-
+        console.log("***********the input state", this.state.search_input)
         
 
         
@@ -52,7 +53,8 @@ class BooksApp extends React.Component {
 
 updateInput = (e) => {
     const new_input = e.target.value
-    this.setState(() => ({
+    console.log("************new_input", new_input)
+    this.setState((currentState) => ({
           search_input: new_input
         }), this.updateSearch(new_input))
   }
@@ -106,7 +108,8 @@ change_status = (the_book_object, e) => {
                       all_with_a_status={this.state.all_with_a_status}
                       change_status={this.change_status}
                       updateInput={this.updateInput}
-                      search_results = {this.state.search_results}/>
+                      search_results = {this.state.search_results}
+                      search_input = {this.state.search_input}/>
           
         )} />
 

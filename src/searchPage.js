@@ -6,6 +6,7 @@ class SearchPage extends React.Component {
 
   render() {
     console.log("search results", this.props.search_results)
+    console.log("search input", this.props.search_input)
 
     return (  
 <div className="search-books">

@@ -15,7 +15,7 @@ render() {
 
       {this.props.all_with_a_status && this.props.all_with_a_status.filter( book_object => book_object.shelf == "wantToRead").map((book_object) => (
     
-      <The_Li book={book_object} change_status={this.props.change_status} />
+      <The_Li book={book_object} change_status={this.props.change_status} key={book_object.id} />
     
 
     ))}
