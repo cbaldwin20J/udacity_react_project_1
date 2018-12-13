@@ -70,6 +70,7 @@ class BooksApp extends React.Component {
                 }else{
                   final_results.push(element_api)
                   used_ids.push(element_state.id)
+                  used_ids.push(element_api.id)
                 }
               }
 
