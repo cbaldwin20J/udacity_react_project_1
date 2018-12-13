@@ -36,17 +36,22 @@ class BooksApp extends React.Component {
 
   }
 
+
+
   updateSearch = (search_input) => {
-    
+    let final_results = '';
     BooksAPI.search(search_input)
       .then((results) => {
-        console.log("***********the input state", this.state.search_input)
+        console.log("***********the results", results)
         
-
+        if(results.error == "empty query"){
+          final_results = "has_error";
+        }else{
+          final_results = results;
+        }
         
-
         this.setState((currentState) => ({
-          search_results: results
+          search_results: final_results
         }))
       })
     }

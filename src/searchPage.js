@@ -29,7 +29,9 @@ class SearchPage extends React.Component {
     </div>
   </div>
 
+  
   <div className="search-books-results">
+  {this.props.search_results == "has_error"? <h1>No results found</h1>:
     <ol className="books-grid">
   {this.props.search_results && this.props.search_results.map((match) => (
     
@@ -38,7 +40,9 @@ class SearchPage extends React.Component {
 
     ))}
   </ol>
+  }
 </div>
+
 
 
 </div>

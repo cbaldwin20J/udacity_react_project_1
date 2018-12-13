@@ -5,7 +5,12 @@ const The_Li = (props) => (
 <li>
   <div className="book">
     <div className="book-top">
+    	
+      {props.book.imageLinks ? 
       <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url('+props.book.imageLinks.smallThumbnail+')' }}></div>
+      :
+      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'none' }}></div>
+      }
       <div className="book-shelf-changer">
         <select onChange={(e) => props.change_status(props.book, e)} value={props.book.shelf} defaultValue={"none"}>
           <option value="move" disabled>Move to...</option>
@@ -17,7 +22,9 @@ const The_Li = (props) => (
       </div>
     </div>
     <div className="book-title">{props.book.title}</div>
-    <div className="book-authors">{props.book.authors}</div>
+    {props.book.authors && 
+    	<div className="book-authors">{props.book.authors}</div>
+    }
   </div>
 </li>
 
