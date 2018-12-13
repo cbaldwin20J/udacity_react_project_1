@@ -47,9 +47,48 @@ class BooksApp extends React.Component {
         if(results.error == "empty query"){
           final_results = "has_error";
         }else{
-          final_results = results;
-        }
+          final_results = [];
+          let used_ids = [];
+          console.log("total api results", results.length)
+          this.state.all_with_a_status.forEach((element_state) => {
+            let is_match = 0;
+            let counter = 0
+            let counter_finish = results.length
+            results.forEach((element_api) => {
+              
+              counter += 1
+
+              if(element_state.id == element_api.id){
+                is_match += 1;
+              }
+
+              if(counter == counter_finish){
+                console.log("counter finish")
+                if(is_match){
+                  final_results.push(element_state)
+                  used_ids.push(element_state.id)
+                }else{
+                  final_results.push(element_api)
+                  used_ids.push(element_state.id)
+                }
+              }
+
+            })// end of results.forEach
+          })// end of this.state.all_with_a_status.forEach
+          console.log("*****************this is only supposed to run once")
+          results.forEach((element_api) => {
+            if(!(used_ids.includes(element_api.id) )){
+              final_results.push(element_api)
+
+            }
+          })
+
+        }//end of else statement in the beginning
         
+
+
+
+
         this.setState((currentState) => ({
           search_results: final_results
         }))
