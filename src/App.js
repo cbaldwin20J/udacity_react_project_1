@@ -44,7 +44,7 @@ class BooksApp extends React.Component {
       .then((results) => {
         console.log("***********the results", results)
         
-        if(results.error == "empty query"){
+        if(!results || results.error == "empty query"){
           final_results = "has_error";
         }else{
           final_results = [];
@@ -62,24 +62,27 @@ class BooksApp extends React.Component {
                 is_match += 1;
               }
 
-              if(counter == counter_finish){
-                console.log("counter finish")
-                if(is_match){
+              if(counter === counter_finish){
+                console.log("counter finish: counter-"+counter+" counter_finish-"+counter_finish )
+                if(is_match && !used_ids.includes(element_state.id)){
                   final_results.push(element_state)
                   used_ids.push(element_state.id)
-                }else{
+                  console.log("book object stage 1", element_state)
+                }else if(!used_ids.includes(element_api.id)){
                   final_results.push(element_api)
                   used_ids.push(element_state.id)
                   used_ids.push(element_api.id)
+                  console.log("book object stage 2", element_api)
                 }
               }
 
             })// end of results.forEach
           })// end of this.state.all_with_a_status.forEach
           console.log("*****************this is only supposed to run once")
-          results.forEach((element_api) => {
-            if(!(used_ids.includes(element_api.id) )){
-              final_results.push(element_api)
+          results.forEach((element_from_api) => {
+            if(!(used_ids.includes(element_from_api.id) )){
+              final_results.push(element_from_api)
+              console.log("book object stage 3", element_from_api)
 
             }
           })
